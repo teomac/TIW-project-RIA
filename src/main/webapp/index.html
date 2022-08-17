@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<meta charset="ISO-8859-1">
+  		<title>Index</title>
+  		<link rel="stylesheet" type="text/css" href="css/login.css" />
+  		<script src="utils.js" charset="UTF-8" defer></script>
+  		<script src="loginManager.js" charset="UTF-8" defer></script>
+		</head>
+		<body>
+	
+	 <div id="id_login_section" style="display: block">
+			<h1 style="text-align:center">Login</h1>
+		
+		<form action="#" id="formLogin">
+		<table class="loginTable">
+			<tr>
+				<td>Username:</td>
+				</tr>
+				<tr>
+				<td><input type="text" name="username" id="username"required pattern=".{8,32}" title="8 to 32 characters"></td>
+			</tr>
+			
+			<tr>
+				<td>Password:</td>
+				</tr>
+				<tr>
+				<td><input type="password" name="password" id="password" required pattern=".{8,32}" title="8 to 32 characters"></td>
+			</tr>
+			
+			<tr>
+				 <td><input  type="button" id="loginbutton" value="Login"></td>
+			</tr>
+			<tr>
+				<td>
+				Don't have an account yet?
+				</tr>
+				<tr>
+			<td>
+				<a href="#" onclick="showRegistration()">Register</a>
+				</td>
+			</tr>
+		</table>
+		
+		</form>
+			<p class="errorMessage"id="errormessagelogin"></p><br>
+			<p class="okMessage"id="registrationOK"></p>
+	</div>
+
+	 <div id="id_registration_section" style="display: none">
+	 <div align="right">
+		<a href="#" onclick="showLogin()" >Back to Login page</a>
+	</div>
+	 <h1 style="text-align:center">Registration</h1>
+		
+		
+		<form action="#" id="formRegistration">
+		<h3 style="text-align:center">Please fill the form to register</h3>
+		<table class="loginTable">
+		
+			<tr>
+				<td>Name: </td>
+				<td><input type="text" name="name" id="name" required></td>
+			</tr>
+			
+			<tr>
+				<td>Surname: </td>
+				<td><input type="text" name="surname" id= "surname" required></td>
+			</tr>
+			
+			<tr>
+				<td>Email: </td>
+				<td><input type="text" name="emailReg" id="emailReg" required></td>
+			</tr>
+			
+			<tr>
+				<td>Username: </td>
+				<td><input type="text" name="usernameReg" id="usernameReg" required pattern=".{8,32}" title="8 to 32 characters"></td>
+			</tr>
+			
+			<tr>
+				<td>Password: </td>
+				<td><input type="password" name="passwordReg" id= "passwordReg" required pattern=".{8,32}" title="8 to 32 characters"></td>
+			</tr>
+			<tr>
+				<td>Repeat Password: </td>
+				<td><input type="password" name="repeatpassword" id= "repeatpassword" required pattern=".{8,32}" title="8 to 32 characters"></td>
+			</tr>
+			
+			<tr>
+			</tr>
+			<tr>
+			<td align="right">
+					<select name="isEmployee" id="isEmployee">
+    				<option value="false" selected="selected">Customer</option>
+    				<option value="true">Employee</option>
+  					</select>
+  			</td>
+  			</tr>
+			
+			<tr>
+				<td align="right"><input type="button" id="registrationbutton" value="Register"></td>
+			</tr>
+		</table>
+		</form>
+		<div class="errorMessage" id="errormessagereg" style="display: block"></div>
+		<div class="errorMessage" id="errormessageregpw" style="display: block"></div>
+		<div class="errorMessage" id="errormessageregemail" style="display: block"></div>
+		
+	 </div>
+
+
+
+	</body>
+</html>

@@ -39,11 +39,11 @@ public class Registration extends HttpServlet{
 		Boolean employee = null;
 		String repeatpassword=null;
 		
-		username = request.getParameter("username");
-		password = request.getParameter("password");
+		username = request.getParameter("usernameReg");
+		password = request.getParameter("passwordReg");
 		name = request.getParameter("name");
 	    surname = request.getParameter("surname");
-	    email = request.getParameter("email");
+	    email = request.getParameter("emailReg");
 	    employee = Boolean.parseBoolean(request.getParameter("isEmployee"));
 	    repeatpassword=request.getParameter("repeatpassword");
 	    	
@@ -62,7 +62,7 @@ public class Registration extends HttpServlet{
 		
 		if(!(password.equals(repeatpassword))) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Password and Repeate password are different");
+			response.getWriter().println("Password and repeat password are different");
 			return;
 		}
 		
@@ -99,8 +99,10 @@ public class Registration extends HttpServlet{
 			response.getWriter().println("Internal server error, retry later"); 
 			return;}
     	
-    	String loginpath = getServletContext().getContextPath() + "/loginPage.html";
-		response.sendRedirect(loginpath);		
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().println("Registration completed");
 	}
     
     @Override

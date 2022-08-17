@@ -26,3 +26,8 @@ table {
 	text-align:center;
     color: red;
 }
+
+.okMessage{
+	text-align:center;
+    color: green;
+}
