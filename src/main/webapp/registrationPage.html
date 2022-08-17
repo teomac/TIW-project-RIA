@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html>
 	<head>
 	<meta charset="ISO-8859-1">
 	<title>Registration page</title>
 	<link rel="stylesheet" type="text/css" media="all" href="css/login.css"/>
+	<script src="utils.js" charset="utf-8" defer></script>
+	<script src = "registration.js"></script>
+	
 	</head>
 	<body>
 		
 			<h2 style="text-align:center">Registration</h2>
 		
 		
-		<form action="Registration" method="post">
+		<form action="#">
 		<h3 style="text-align:center">Please fill the form to register</h3>
 		<table class="loginTable">
 		
@@ -25,6 +28,11 @@
 			</tr>
 			
 			<tr>
+				<td>Email: </td>
+				<td><input type="text" name="email" required></td>
+			</tr>
+			
+			<tr>
 				<td>Username: </td>
 				<td><input type="text" name="username" required pattern=".{8,32}" title="8 to 32 characters"></td>
 			</tr>
@@ -32,6 +40,10 @@
 			<tr>
 				<td>Password: </td>
 				<td><input type="password" name="password" required pattern=".{8,32}" title="8 to 32 characters"></td>
+			</tr>
+			<tr>
+				<td>Repeat Password: </td>
+				<td><input type="password" name="repeatpassword" required pattern=".{8,32}" title="8 to 32 characters"></td>
 			</tr>
 			
 			<tr>
@@ -46,13 +58,12 @@
   			</tr>
 			
 			<tr>
-				<td><input type="submit" name="submit" value="Register"></td>
+				<td><input type="submit" id="registrationbutton" value="Register"></td>
 			</tr>
-			
-
 		</table>
-		
 		</form>
+		<div class="errorMessage" id="id_error_message" style="display: none">ERROR:
+    </div>
 
 	</body>
 </html>
