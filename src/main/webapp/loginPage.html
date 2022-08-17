@@ -4,14 +4,14 @@
   		<meta charset="ISO-8859-1">
   		<title>Login page</title>
   		<link rel="stylesheet" type="text/css" href="css/login.css" />
-  		<script src="scripts/utils.js" charset="UTF-8" defer></script>
-  		<script src="scripts/loginManager.js" charset="UTF-8" defer></script>
+  		<script src="utils.js" charset="UTF-8" defer></script>
+  		<script src="loginManager.js" charset="UTF-8" defer></script>
 		</head>
 		<body>
 	
 			<h1 style="text-align:center">Login</h1>
 		
-		<form method="post" action="Login">
+		<form action="#">
 		
 		<table class="loginTable">
 			<tr>
@@ -29,7 +29,7 @@
 			</tr>
 			
 			<tr>
-				 <input id="loginbutton" type="button" value="login">
+				 <td><input  type="button" id="loginbutton" value="login"></td>
 			</tr>
 			<tr>
 				<td>
@@ -44,6 +44,7 @@
 		
 		</form>
 
+	<p class="errorMessage"id="errormessage"></p>
 
 	</body>
 </html>
