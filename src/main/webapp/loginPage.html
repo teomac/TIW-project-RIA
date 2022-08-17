@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html>
 	<head>
-	<meta charset="ISO-8859-1">
-	<title>Login page</title>
-	<link rel="stylesheet" type="text/css" media="all" href="css/login.css"/>
-	</head>
-	<body>
+  		<meta charset="ISO-8859-1">
+  		<title>Login page</title>
+  		<link rel="stylesheet" type="text/css" href="css/login.css" />
+  		<script src="scripts/utils.js" charset="UTF-8" defer></script>
+  		<script src="scripts/loginManager.js" charset="UTF-8" defer></script>
+		</head>
+		<body>
 	
 			<h1 style="text-align:center">Login</h1>
 		
@@ -27,7 +29,7 @@
 			</tr>
 			
 			<tr>
-				<td><input type="submit" name="submit" value="Login"></td>
+				 <input id="loginbutton" type="button" value="login">
 			</tr>
 			<tr>
 				<td>
@@ -39,7 +41,6 @@
 				</td>
 			</tr>
 		</table>
-		<p class="errorMessage" th:text=" ${errorMsg}"></p>
 		
 		</form>
 
