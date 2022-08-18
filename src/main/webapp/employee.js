@@ -330,7 +330,8 @@
 		        
 		        img = document.createElement("img");
 		        img.src=temp;
-		        img.style.height="200";
+		        img.style.height="200px";
+		        img.style.width="200px";
 		        row.appendChild(img);
 		        
 		        doublecell = document.createElement("td");
