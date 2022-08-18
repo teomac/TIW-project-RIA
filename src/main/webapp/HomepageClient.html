@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+<link rel="stylesheet" type="text/css" media="all" href="css/mystyle.css" />
+	<script src="utils.js" charset="UTF-8" defer></script>
+  	<script src="client.js" charset="UTF-8" defer></script>
 </head>
 <body>
 	<div align="right">
-		<a th:href="@{/Logout}">Logout</a>
+		<a id="logout" onclick="logout()">Logout</a>
 	</div>
-	<h1>Welcome to the Client Home Page</h1>
-	<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 	
-	<div th:if="${quotes.size() >0}">
-		<table>
+	<div id="client_startpage">
+	<h1>Welcome to the Client Home Page</h1>
+	<p> Nice to see you again <span id="id_username"></span></p>
+	
+	<div id="client_quotes">
+		<table id="client_quotes_table">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -23,48 +26,28 @@
 					<th>Link</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:each="q : ${quotes}">
-					<td th:text="${q.quoteID}"></td>
-					<td th:text="${ q.productID}"></td>
-					<td th:text="${ q.price}"></td>
-					<td><a th:href="@{/GetQuoteDetails(quoteID=${q.quoteID})}">Details</a></td>
-					<td th:href></td>
+			<tbody id="client_quotes_body">
+				<tr>
+					<td id="client_quoteID"></td>
+					<td id="client_productID"></td>
+					<td id="client_price"></td>
+					<td><a href="#" onclick="getQuoteDetails(client_quoteID)">Details</a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>  
-	<div th:if="${quotes.size() == 0}"> No quotes were created.</div>
+	<div id="no_quotes_client" style="display: none"> You haven't created any quote yet.</div>
+	<div id="error_message" style="display: none"></div>
 
 	<div>
-		<h1>Create Quote</h1>
-	
-		<p>Select a product to display the available options</p>
-
-			<form action="HomeClient">
-  			<label for="product">Choose a product:</label>
-  				<select name="productCode" id="productCode">
-  				<option value="" selected disabled hidden=>Choose here</option>
-    					 <option th:each="p : ${products}"
-                    th:text="${p.productName}"
-                    th:value="${p.productCode}">
-  				</select>
-  			<br><br>
-  					<input type="submit" value="Load available options">
-					</form>
-				
-				<br><br>
-				<p th:text=" ${message}"></p>
-				<form action="CreateQuote" method="post">
-				<input type="hidden" name="chosenProduct" th:value="${chosenProduct}">
- 					 <div th:each="t : ${productOptions}">
-   						 <input type="checkbox" th:value="${t.optionID}" th:name="option[]" th:id="${t.name}"/>
-    						<label th:text="${t.name}"></label>
-  					</div>
-  					<br><br>
-  							<input th:if="${message}!=null"
-  							type="submit" value= 'Create Quote'/>
-						</form>
+		<h1>Create quote</h1>
+		
+		<div id="quote_form">
+			<table id="form_table">
+			
+			</table>
+		
+		
 	</div>
 </body>
 </html>
