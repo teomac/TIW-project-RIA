@@ -142,7 +142,16 @@
 		  }
 		  
 	function createOption(list) {
+		var self = this;
+		document.getElementById('select').innerHTML=" ";
 		
+		
+		el = document.createElement('option');
+    	//el.value = value.productName;
+    	el.textContent = "--Select--";
+    	el.id = "0";
+    	document.getElementById('select').appendChild(el);
+    	
 	list.forEach(function(value) {
 		el = document.createElement('option');
     	//el.value = value.productName;
@@ -159,7 +168,6 @@
 		makeCall("GET", "GetProducts", null,
 		function(req) {
 			var productsToShow = JSON.parse(req.responseText);
-			var self = this;
 			createOption(productsToShow);
 		})
 	}	  
