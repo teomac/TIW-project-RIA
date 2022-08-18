@@ -3,6 +3,8 @@ package it.polimi.tiw.projects.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +16,12 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import it.polimi.tiw.projects.beans.Option;
+import it.polimi.tiw.projects.beans.Product;
 import it.polimi.tiw.projects.beans.Quote;
 import it.polimi.tiw.projects.beans.User;
+import it.polimi.tiw.projects.dao.OptionDAO;
+import it.polimi.tiw.projects.dao.ProductDAO;
 import it.polimi.tiw.projects.dao.QuoteDAO;
 import it.polimi.tiw.projects.utils.ConnectionHandler;
 
@@ -78,10 +84,62 @@ public class GetQuoteDetails extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("User not allowed");
 			return;}
+		
+		int productID=quote.getProductID();
+		ProductDAO productDao = new ProductDAO(connection);
+		Product product = new Product();
+				
+				
+		try {
+			product = productDao.findProductDetails(productID);
+					
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Not possible to recover product");
+			return;}
+				
+		if(product==null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.getWriter().println("Resource not found");
+			return;}
+		
+		
+		List<Option> selectedOptions = new ArrayList<Option>();	
+		
+		try {
+			selectedOptions= quoteDao.findQuoteOptions(quoteID);
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Not possible to recover options");
+			return;
+		}
+		if (selectedOptions.size() == 0) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.getWriter().println("Resource not found");
+			return;
+		}
+				
+		
+		OptionDAO optionDao = new OptionDAO(connection);
+		List<Option> sOpt = new ArrayList<Option>();
+		
+		for(Option opt: selectedOptions) {
+			int temp = opt.getOptionID();
+			Option o1 = new Option();
+			try {
+				o1 = optionDao.findOptionDetails(temp);
+				sOpt.add(o1);
+			}catch (SQLException e) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().println("Not possible to recover options");
+				return;}
+			}
+		
 	
+		ToSend data = new ToSend(product, sOpt, quote);
 		
 		Gson gson = new GsonBuilder().create();
-		String json = gson.toJson(quote);
+		String json = gson.toJson(data);
 		
 		
 		response.setContentType("application/json");
@@ -105,5 +163,18 @@ public class GetQuoteDetails extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	private class ToSend {
+
+        private final Product product;
+        private final List<Option> options;
+        private final Quote quote;
+
+        ToSend(Product product, List<Option> options, Quote quote){
+            this.quote = quote;
+            this.product = product;
+            this.options = options;
+        }
+    }
 }
 

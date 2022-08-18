@@ -270,13 +270,13 @@
 		        function(req) {
 		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
 		            if (req.status == 200) {
-		              var quote = JSON.parse(req.responseText);
-		              if (quote === null) {
+		              var data = JSON.parse(req.responseText);
+		              if (data === null) {
 		               document.getElementById("error_message2").style.display="block"; 
 		                return;
 		              }
 		              // If quotes list is not emtpy, then update view
-		              localStorage.setItem("saved_quote", quote);
+		              self.update(data); // self visible by closure
 		            }
 		           else {
 		           	// request failed, handle it
@@ -286,79 +286,20 @@
 		      }
 		        }
 		      );
-		      self.show2();
 		      }
-		      
-		      this.show2 = function(){
-		      
-		      this.quote = localStorage.getItem("saved_quote");
-		      this.productID=this.quote.productID.parseInt();
-		      var self = this; //Important!
-		      
-		    makeCall("GET", "GetProductDetails?productID=" +this.productID, null,
-		        // callback function
-		        function(req) {
-		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
-		            if (req.status == 200) {
-		              var product = JSON.parse(req.responseText);
-
-		              if (product === null) {
-		               document.getElementById("error_message2").style.display="block"; 
-		                return;
-		              }
-		              // If quotes list is not emtpy, then update view
-		              localStorage.setItem("product", product);
-		            }
-		           else {
-		           	// request failed, handle it
-		           	self.listcontainer.style.visibility = "hidden";
-		            document.getElementById("error_message2").style.display="block";
-
-		          }
-		      }
-		        }
-		      ); 
-		      self.show3();}
-		      
-		      this.show3 = function(){
-			
-				this.quoteID = localStorage.getItem("quoteID");
-		      	var self = this; //Important!
-		      
-		       makeCall("GET", "GetQuoteOptions?quoteID=" + quoteID, null,
-		        // callback function
-		        function(req) {
-		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
-		            if (req.status == 200) {
-		              var selectedOptions = JSON.parse(req.responseText);
-
-		              if (selectedOptions.length == 0) {
-		               document.getElementById("error_message2").style.display="block"; 
-		                return;
-		              }
-		              // If quotes list is not emtpy, then update view
-		              localStorage.setItem("options", selectedOptions);
-		              self.update(); // self visible by closure
-		            }
-		           else {
-		           	// request failed, handle it
-		           	self.listcontainer.style.visibility = "hidden";
-		            document.getElementById("error_message2").style.display="block";
-
-		          }
-		      }
-		        }
-		      );
-		    }
-		    ;
+		     
 
 
-		    this.update = function() {
+		    this.update = function(data) {
 		      var elem, i, row, destcell, datecell, linkcell, anchor;
 		      this.listcontainerbody.innerHTML = "";
+		      this.data = data;
 		      
-		      quote=localStorage.getItem("saved_quote");
-		      product=localStorage.getItem("product");
+		      let quote=data.quote;
+		      let product=data.product;
+		      let options=data.options;
+		      
+		      
 		      
 		      // build updated list
 		      var self = this;
@@ -385,10 +326,12 @@
 		        textcell.textContent = product.productName;
 		        row.appendChild(textcell);
 		        
-		        //img = document.createElement("img");
-		        //img.src="src/main/webapp/upload/".concat(product.productImage);
-		        //img.style.height="200";
-		        //row.appendChild(img);
+		        temp='upload/'.concat(product.productImage.toString());
+		        
+		        img = document.createElement("img");
+		        img.src=temp;
+		        img.style.height="200";
+		        row.appendChild(img);
 		        
 		        doublecell = document.createElement("td");
 		        doublecell.textContent= quote.price;
@@ -399,24 +342,23 @@
 		        
 		        
 		        this.listcontainer.style.display = "block";
-		        //this.update2();
+		        this.update2(options);
 		        
 		      
 		        }
 		        
 		        ////////////////////////////
 		        
-		        this.update2= function(){
+		        this.update2= function(selectedOptions){
+
 			
 		        this.listcontainerbody2.innerHTML = "";
 		        
 		        var self=this;
 		        
-		        options=localStorage.getItem("options");
-		        
 		      
 		        //Create a row for each conference
-		        options.forEach(function(option){ 
+		        selectedOptions.forEach(function(option){ 
 		        row2 = document.createElement("tr");
 		        
 		        numberCell = document.createElement("td");
@@ -431,10 +373,12 @@
 		        textcell = document.createElement("td");
 		        textcell.textContent = "In Sale!";
 		        row2.appendChild(textcell);}
+		        
+		       self.listcontainerbody2.appendChild(row2);
 		        });
 
 				// Add row to table body
-		        self.listcontainerbody2.appendChild(row2);
+		        
 		        
 		        
 		      
