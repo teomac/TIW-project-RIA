@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div align="right">
-		<a id="logout" onclick="logout()">Logout</a>
+		<a href="Logout" id="logout">Logout</a>
 	</div>
 	
 	<div id="employee_startpage">
@@ -27,24 +27,18 @@
 				</tr>
 			</thead>
 			<tbody id="employee_quotes_body">
-				<tr>
-					<td id="employee_quoteID"></td>
-					<td id="employee_productID"></td>
-					<td id="employee_price"></td>
-					<td><a href="#" onclick="getQuoteDetails(employee_quoteID)">Details</a></td>
-				</tr>
 			</tbody>
 		</table>
 	</div>  
 	<div id="no_quotes_employee" style="display: none"> You priced zero quotes.</div>
 	<div id="error_message" style="display: none"></div>
 
-	<div>
+	<div id="not_priced_quotes">
 		<h1>Price Quote</h1>
 	
 		<p>Select a quote to price</p>
 		
-		<div id="not_priced_content">
+		<div>
 			<table id="not_priced_table">
 				<thead>
 					<tr>
@@ -55,26 +49,63 @@
 						<th>Link</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="not_priced_body">
 					<tr>
-						<td id="not_priced_quoteID"></td>
-						<td id="not_priced_productID"></td>
-						<td id="not_priced_price"></td>
-						<td id="not_priced_clientUsername"></td>
-						<td><a href="#" onclick="addPrice(not_priced_quoteID)">Add price</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>  
+		</div>
 		<div id="no_quotes_to_price" style="display: none"> There are no quotes to price now</div>
+		<div id="error_message1" style="display: none"></div>	
+	</div>
+	
+	<div id="quote_details" style="display:none"><h1>Quote details</h1>
+		<div>
+		<!-- TODO -->
+		<table class="padding-table-columns" id="details_table">
+		<thead>
+  			<tr>
+    		 	 <th>QuoteID</th>
+   				 <th>Client</th>
+   			     <th>Employee</th>
+   			     <th>ProductID</th>
+   			     <th>Product Name</th>
+   			     <th>Image</th>
+   			     <th>Price</th>
+ 			</tr>
+ 			</thead>
+ 				<tbody id="details1">
+  				</tbody>
+		</table>
+		
 		</div>
 		
+		<div>
+		<br>
+		<br>
+		<br>
 		
+		<h2>Selected Options</h2>
 		
-		
-		
-		
-		
-	</div>
+		<table id="options_table">
+		<thead>
+  			<tr>
+    			 <th>OptionID</th>
+   				 <th>Name</th>
+   			     <th>Status</th>
+ 			</tr>
+ 			</thead>
+ 				<tbody id="details2">
+				</tbody>
+				
+		</table>
+				
+		</div>
+		</div>
+		<div id="error_message2" style="display: none">Failed to load quote details</div>
+	
+	
+	
 </body>
 </html>

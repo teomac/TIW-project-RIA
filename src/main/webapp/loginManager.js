@@ -90,13 +90,12 @@ function emailValid(){
             makeCall("POST", 'Login', e.target.closest("form"),
                 function(x) {
                     if (x.readyState == XMLHttpRequest.DONE) {
-                        var message = x.responseText;
+                        message = x.responseText;
                         document.getElementById('registrationOK').textContent=" ";
                         switch (x.status) {
                             case 200:
-                                sessionStorage.setItem('employee', message);
                                 sessionStorage.setItem('username', username);
-                                if(message){
+                                if(String(message).includes("employee")){
 	                               window.location.href = "HomepageEmployee.html";
                                     }
                                     else{
