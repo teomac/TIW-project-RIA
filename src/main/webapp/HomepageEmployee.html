@@ -9,7 +9,8 @@
 </head>
 <body>
 	<div align="right">
-		<a href="Logout" id="logout">Logout</a>
+		<a href="#" id="logout">Logout</a>
+		<a href="#" id="home" style="display:none">Back to home page</a>
 	</div>
 	
 	<div id="employee_startpage">
@@ -31,7 +32,7 @@
 		</table>
 	</div>  
 	<div id="no_quotes_employee" style="display: none"> You priced zero quotes.</div>
-	<div id="error_message" style="display: none"></div>
+	<div class = "errorMessage" id="error_message" style="display: none"></div>
 
 	<div id="not_priced_quotes">
 		<h1>Price Quote</h1>
@@ -57,7 +58,7 @@
 		</div>  
 		</div>
 		<div id="no_quotes_to_price" style="display: none"> There are no quotes to price now</div>
-		<div id="error_message1" style="display: none"></div>	
+		<div class = "errorMessage" id="error_message1" style="display: none"></div>	
 	</div>
 	
 	<div id="quote_details" style="display: none"><h1>Quote details</h1>
@@ -84,6 +85,20 @@
 		<div>
 		<br>
 		<br>
+		
+		
+		
+		<div id="price_quote" style="display:none">
+		<a>Please insert a price for this quote</a>
+		<div>
+		<form action="#">
+				<input type="number" name="price" id="written_price" required step="0.01" min="0.01" title="Price has to be greater than zero!">
+				<button type="button" id="price_form">Send price</button>
+		</form>
+		<div  class = "errorMessage" id="error_message3" style="display: none"></div>
+		</div></div>
+		
+		
 		<br>
 		
 		<h2>Selected Options</h2>
@@ -103,7 +118,7 @@
 				
 		</div>
 		</div>
-		<div id="error_message2" style="display: none">Failed to load quote details</div>
+		<div class = "errorMessage" id="error_message2" style="display: none">Failed to load quote details</div>
 	
 	
 	

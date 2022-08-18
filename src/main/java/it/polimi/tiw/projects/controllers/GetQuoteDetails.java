@@ -80,7 +80,7 @@ public class GetQuoteDetails extends HttpServlet {
 				
 		// check if the user is an Employee and quote.employeeUsername is equal to active Employee username
 				
-		if (user.getEmployee()==true && !(user.getUsername().equals(quote.getEmployeeUsername())))  {
+		if (quote.getPrice()!=0 && user.getEmployee()==true && !(user.getUsername().equals(quote.getEmployeeUsername())))  {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("User not allowed");
 			return;}

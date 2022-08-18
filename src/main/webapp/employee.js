@@ -65,6 +65,70 @@
 	
 	
 	
+	function BackHome(){
+		pageOrchestrator.refresh();
+	}
+	
+	
+	function addPrice(quote){
+		
+		pageOrchestrator.prepareShowDetails();
+		document.getElementById("price_quote").style.display="block";
+		document.getElementById("price_form").addEventListener('click', () => {
+			price=document.getElementById("written_price").value;
+			if(price < 0 || price === 0){
+				document.getElementById("error_message3").textContent="Price can not be negative or equal than zero";
+				document.getElementById("error_message3").style.display="block";
+				pageOrchestrator.prepareShowDetails();
+			}	
+			else{
+	        receivePrice(quote, price);}
+	      })
+		
+	}
+	
+	function resetAddPrice(){
+		document.getElementById("written_price").value="";
+		document.getElementById("price_quote").style.display="none";
+		document.getElementById("error_message3").style.display="block";
+	}
+	
+	
+	
+	function receivePrice(quote, price){
+		 var self = this; //Important!
+
+				this.price=price;
+				this.quoteID=quote;
+				
+			
+		      makeCall("POST", "AddPrice?price=" + this.price + "&quoteID=" + this.quoteID, null,
+		        // callback function
+		        function(req) {
+					var message = JSON.parse(req.responseText);
+					
+		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
+		            if (req.status == 200) {
+		              
+		              // If quotes list is not emtpy, then update view
+		              pageOrchestrator.refresh(); // self visible by closure
+		            }
+		           else {
+		           	// request failed, handle it
+		           	document.getElementByID("error_message3").style.display="block";
+		            document.getElementById("error_message3").textContent=message; //for demo purposes
+		            return;
+		          }}
+		      }
+		        );
+		      
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	// Component that handles the Conferences Table
@@ -226,7 +290,10 @@
 		        anchor = document.createElement("a");
 		        anchor.textContent = "Add price";
 		        anchor.href="#"
-		        //anchor.onclick=addPrice(quote);
+		        //anchor.onclick=addPrice(quote.quoteID);
+		        anchor.addEventListener("click", () => {
+				localStorage.setItem("quoteID", quote.quoteID);
+				addPrice(quote.quoteID);})
 		        row.appendChild(anchor);
 
 				// Add row to table body
@@ -265,7 +332,7 @@
 		      this.quoteID = localStorage.getItem("quoteID");
 		      var self = this; //Important!
 
-		      makeCall("GET", "GetQuoteDetails?quoteID=" + quoteID, null,
+		      makeCall("GET", "GetQuoteDetails?quoteID=" + this.quoteID, null,
 		        // callback function
 		        function(req) {
 		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
@@ -427,7 +494,13 @@
 		
 		employeeNotPricedQuotesList.show();
 		
+		document.getElementById("logout").addEventListener('click', () => {
+	        logout();
+	      })
 		
+		document.getElementById("home").addEventListener('click', () => {
+	        BackHome();
+	      })
 		
 
 	     /* missionDetails = new MissionDetails({ // many parameters, wrap them in an
@@ -459,9 +532,13 @@
 	    
 
 	    this.refresh = function() {
-	      alertContainer.textContent = "";  
+	      alertContainer.textContent = "";
+	      resetMessages();  
 	      personalMessage.show();
 	      quoteDetails.reset();
+	      document.getElementById("logout").style.display="block";
+		  document.getElementById("home").style.display="none";
+		  resetAddPrice();
           employeeQuotesList.reset();
 	      employeeQuotesList.show();
 	      employeeNotPricedQuotesList.reset();
@@ -474,7 +551,10 @@
 			employeeNotPricedQuotesList.reset();
 			document.getElementById("employee_startpage").style.display="none";
 			document.getElementById("quote_details").style.display="block";
+			document.getElementById("logout").style.display="none";
+			document.getElementById("home").style.display="block";
 			quoteDetails.show();
+			
 	}
 	  
 
