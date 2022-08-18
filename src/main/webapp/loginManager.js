@@ -84,6 +84,7 @@ function emailValid(){
 (function() {
 
     document.getElementById("loginbutton").addEventListener('click', (e) => {
+		username=document.getElementById("username").value;
         var form = e.target.closest("form");
         if (form.checkValidity()) {
             makeCall("POST", 'Login', e.target.closest("form"),
@@ -93,8 +94,13 @@ function emailValid(){
                         document.getElementById('registrationOK').textContent=" ";
                         switch (x.status) {
                             case 200:
-                                sessionStorage.setItem('username', message);
-                                window.location.href = "HomepageClient.html";
+                                sessionStorage.setItem('employee', message);
+                                sessionStorage.setItem('username', username);
+                                if(message){
+	                               window.location.href = "HomepageEmployee.html";
+                                    }
+                                    else{
+                                window.location.href = "HomepageClient.html";}
                                 break;
                             case 400: // bad request
                                 document.getElementById("errormessagelogin").textContent = message;

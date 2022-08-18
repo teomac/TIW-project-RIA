@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+<link rel="stylesheet" type="text/css" media="all" href="css/mystyle.css" />
+	<script src="utils.js" charset="UTF-8" defer></script>
+  	<script src="employee.js" charset="UTF-8" defer></script>
 </head>
 <body>
 	<div align="right">
-		<a th:href="@{/Logout}">Logout</a>
+		<a id="logout" onclick="logout()">Logout</a>
 	</div>
-	<h1>Welcome to the Employee Home Page</h1>
-	<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 	
-	<div th:if="${quotes.size() >0}">
-		<table>
+	<div id="employee_startpage">
+	<h1>Welcome to the Employee Home Page</h1>
+	<p> Nice to see you again <span id="id_username"></span></p>
+	
+	<div id="employee_quotes">
+		<table id="employee_quotes_table">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -23,26 +26,26 @@
 					<th>Link</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:each="q : ${quotes}">
-					<td th:text="${q.quoteID}"></td>
-					<td th:text="${ q.productID}"></td>
-					<td th:text="${ q.price}"></td>
-					<td><a th:href="@{/GetQuoteDetails(quoteID=${q.quoteID})}">Details</a></td>
-					<td th:href></td>
+			<tbody id="employee_quotes_body">
+				<tr>
+					<td id="employee_quoteID"></td>
+					<td id="employee_productID"></td>
+					<td id="employee_price"></td>
+					<td><a href="#" onclick="getQuoteDetails(employee_quoteID)">Details</a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>  
-	<div th:if="${quotes.size() == 0}"> No quotes were priced.</div>
+	<div id="no_quotes_employee" style="display: none"> You priced zero quotes.</div>
+	<div id="error_message" style="display: none"></div>
 
 	<div>
 		<h1>Price Quote</h1>
 	
 		<p>Select a quote to price</p>
 		
-		<div th:if="${freequotes.size() >0}">
-			<table>
+		<div id="not_priced_content">
+			<table id="not_priced_table">
 				<thead>
 					<tr>
 						<th>ID</th>
@@ -53,19 +56,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="fq : ${freequotes}">
-						<td th:text="${fq.quoteID}"></td>
-						<td th:text="${ fq.productID}"></td>
-						<td th:text="${ fq.price}"></td>
-						<td th:text="${ fq.clientUsername}"></td>
-						<td><a th:href="@{/GoToPricePage(quoteID=${fq.quoteID})}">Add price</a></td>
-						<td th:href></td>
+					<tr>
+						<td id="not_priced_quoteID"></td>
+						<td id="not_priced_productID"></td>
+						<td id="not_priced_price"></td>
+						<td id="not_priced_clientUsername"></td>
+						<td><a href="#" onclick="addPrice(not_priced_quoteID)">Add price</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>  
-		<div th:if="${freequotes.size() == 0}"> No quotes were created.</div>
-
+		<div id="no_quotes_to_price" style="display: none"> There are no quotes to price now</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
 	</div>
 </body>
 </html>
