@@ -75,7 +75,7 @@
 		  	resetMessages();
 		  	
 		  	 this.reset = function() {
-	      this.listcontainer.style.visibility = "hidden";
+	      this.listcontainer.style.display = "none";
 	    }
 
 		    this.show = function() {
@@ -142,7 +142,7 @@
 		        self.listcontainerbody.appendChild(row);
 		      });
 		      
-		      this.listcontainer.style.visibility = "visible";
+		      this.listcontainer.style.display = "block";
 		    }
 		  }
 		  
@@ -164,7 +164,7 @@
 		  	resetMessages();
 		  	
 		  	 this.reset = function() {
-	      this.listcontainer.style.visibility = "hidden";
+	      this.listcontainer.style.display = "none";
 	    }
 
 		    this.show = function() {
@@ -233,7 +233,7 @@
 		        self.listcontainerbody.appendChild(row);
 		      });
 		      
-		      this.listcontainer.style.visibility = "visible";
+		      this.listcontainer.style.display = "block";
 		    }
 		  }
 		  
@@ -248,20 +248,17 @@
 		    this.listcontainerbody = _listcontainerbody;
 		    this.listcontainerbody2 = _listcontainerbody2;
 				
-			this.listcontainer.style.visibility = "visible";
-			this.listcontainer2.style.visibility = "visible";
-			document.getElementById("employee_startpage").style.visibility="hidden";
-			document.getElementById("quote_details").style.visibility="visible";
+			this.listcontainer.style.display = "block";
+			this.listcontainer2.style.display = "block";
+			document.getElementById("employee_startpage").style.display="none";
+			document.getElementById("quote_details").style.display="block";
 		  	
 		  	
 		  	 this.reset = function() {
-	      this.listcontainer.style.visibility = "hidden";
-	      this.listcontainer2.style.visibility = "hidden";
-	      document.getElementById("employee_startpage").style.visibility="visible";
-	      document.getElementById("quote_details").style.visibility="hidden";
-		  	
-	      
-	    }
+	      this.listcontainer.style.display = "none";
+	      this.listcontainer2.style.display = "none";
+	      document.getElementById("employee_startpage").style.display="block";
+	      document.getElementById("quote_details").style.display="none";}
 
 		    this.show = function() {
 		      
@@ -274,14 +271,12 @@
 		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
 		            if (req.status == 200) {
 		              var quote = JSON.parse(req.responseText);
-
 		              if (quote === null) {
 		               document.getElementById("error_message2").style.display="block"; 
 		                return;
 		              }
 		              // If quotes list is not emtpy, then update view
 		              localStorage.setItem("saved_quote", quote);
-		              localStorage.setItem("productID", quote.getProductID)
 		            }
 		           else {
 		           	// request failed, handle it
@@ -291,8 +286,16 @@
 		      }
 		        }
 		      );
+		      self.show2();
+		      }
 		      
-		    makeCall("GET", "GetProductDetails?productID=" +localStorage.getItem("quoteID"), null,
+		      this.show2 = function(){
+		      
+		      this.quote = localStorage.getItem("saved_quote");
+		      this.productID=this.quote.productID.parseInt();
+		      var self = this; //Important!
+		      
+		    makeCall("GET", "GetProductDetails?productID=" +this.productID, null,
 		        // callback function
 		        function(req) {
 		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
@@ -315,6 +318,13 @@
 		      }
 		        }
 		      ); 
+		      self.show3();}
+		      
+		      this.show3 = function(){
+			
+				this.quoteID = localStorage.getItem("quoteID");
+		      	var self = this; //Important!
+		      
 		       makeCall("GET", "GetQuoteOptions?quoteID=" + quoteID, null,
 		        // callback function
 		        function(req) {
@@ -339,7 +349,8 @@
 		      }
 		        }
 		      );
-		    };
+		    }
+		    ;
 
 
 		    this.update = function() {
@@ -387,7 +398,7 @@
 		        self.listcontainerbody.appendChild(row);
 		        
 		        
-		           this.listcontainer.style.visibility = "visible";
+		        this.listcontainer.style.display = "block";
 		        //this.update2();
 		        
 		      
@@ -427,7 +438,7 @@
 		        
 		        
 		      
-		      this.listcontainer2.style.visibility = "visible";
+		      this.listcontainer2.style.display = "block";
 		    }
 		  }
 		  
@@ -516,8 +527,8 @@
 	    this.prepareShowDetails=function(){
 			employeeQuotesList.reset();
 			employeeNotPricedQuotesList.reset();
-			document.getElementById("employee_startpage").style.visibility="hidden";
-			document.getElementById("quote_details").style.visibility="visible";
+			document.getElementById("employee_startpage").style.display="none";
+			document.getElementById("quote_details").style.display="block";
 			quoteDetails.show();
 	}
 	  
