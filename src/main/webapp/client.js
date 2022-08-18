@@ -21,7 +21,7 @@
 		document.getElementById("error_message").style.display="none";
 	}
 	
-	 function PersonalMessage(_username, messagecontainer) {
+	function PersonalMessage(_username, messagecontainer) {
 	    this.username = _username;
 	    this.show = function() {
 	      messagecontainer.textContent = this.username;
@@ -141,8 +141,32 @@
 		    }
 		  }
 		  
+	function createOption(list) {
+		
+	list.forEach(function(value) {
+		el = document.createElement('option');
+    	//el.value = value.productName;
+    	el.textContent = value.productName;
+    	el.id = value.productID;
+    
+    	document.getElementById('select').appendChild(el);
+	})
+    
+}
+	
+	
+	function dropDown() {
+		makeCall("GET", "GetProducts", null,
+		function(req) {
+			var productsToShow = JSON.parse(req.responseText);
+			var self = this;
+			createOption(productsToShow);
+		})
+	}	  
+
 		  
-		  function PageOrchestrator() {
+		  
+	function PageOrchestrator() {
 	    var alertContainer = document.getElementById("error_message");
 	    
 	    this.start = function() {
@@ -156,6 +180,8 @@
 		,document.getElementById("client_quotes_body"));
 		
 		clientQuotesList.show();
+		dropDown();
+		
 
 	      }
 	    
