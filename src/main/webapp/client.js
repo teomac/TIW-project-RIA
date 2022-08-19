@@ -141,7 +141,8 @@
 		    }
 		  }
 		  
-	function createOption(list) {
+	function createOption(list, options) {
+		this.options = options;
 		var self = this;
 		document.getElementById('select').innerHTML=" ";
 		
@@ -154,21 +155,84 @@
     	
 	list.forEach(function(value) {
 		el = document.createElement('option');
-    	//el.value = value.productName;
+    	el.value = value.productName;
     	el.textContent = value.productName;
     	el.id = value.productID;
+    	
+    	el.addEventListener("click", () => {
+			changeFunc(value.productID, this.options);
+	
+		})
     
     	document.getElementById('select').appendChild(el);
+    	
 	})
     
 }
+
+
+
+
+	function changeFunc(id, options) {
+		this.id = id
+		
+		var list = options.filter((opt) => opt.productID === this.id);
+		
+		list.forEach(function(value) {
+			row = document.createElement("tr");
+			numberCell = document.createElement("td");
+        	numberCell.textContent = value.name;
+        	row.appendChild(numberCell);
+        	document.getElementById("options_container").appendChild(row);
+		})
+		
+	}
+
 	
 	
-	function dropDown() {
+	function options() {
+		makeCall("GET", "GetOptions", null, 
+		function(req) {
+			if (req.readyState == XMLHttpRequest.DONE) {
+				if (req.status == 200) {
+					var optionsToShow = JSON.parse(req.responseText);
+				}
+				
+				else {
+					document.getElementById("error_message").textContent="Not possible to recover data"; //for demo purposes
+	            	document.getElementById("error_message").style.display="block";
+				}
+			}
+			
+			
+			return optionsToShow;
+			
+		})
+	}
+	
+	function dropDown(options) {
 		makeCall("GET", "GetProducts", null,
 		function(req) {
-			var productsToShow = JSON.parse(req.responseText);
-			createOption(productsToShow);
+			
+			if (req.readyState == XMLHttpRequest.DONE) {
+				if (req.status == 200) {
+					var productsToShow = JSON.parse(req.responseText);
+					if(productsToShow === null) {
+						document.getElementById("error_message").textContent="Not possible to recover products"; //for demo purposes
+		            	document.getElementById("error_message").style.display="block";
+					}
+					else {
+						createOption(productsToShow, options);
+					}
+					
+				}
+				
+				else {
+					document.getElementById("error_message").textContent="Not possible to recover data"; //for demo purposes
+	            	document.getElementById("error_message").style.display="block";
+				}
+			}
+			
 		})
 	}	  
 
@@ -182,13 +246,21 @@
 	        document.getElementById("id_username"));
 	        
 	      personalMessage.show();
+	      
+	      document.getElementById("logout").addEventListener('click', () => {
+	        logout();
+	      })
 
 	      clientQuotesList = new ClientQuotesList(
 	        document.getElementById("client_quotes_table")
 		,document.getElementById("client_quotes_body"));
 		
 		clientQuotesList.show();
-		dropDown();
+		
+		this.options = options();
+		dropDown(this.options);
+		
+		
 		
 
 	      }
@@ -197,9 +269,11 @@
 	    this.refresh = function() {
 	      alertContainer.textContent = "";  
 	      personalMessage.show();
-          employeeQuotesList.reset();
-	      employeeQuotesList.show();
+          clientQuotesList.reset();
+          document.getElementById("logout").style.display="block";
+	      clientQuotesList.show();
 	    }
+	    
 	  
 
 }}

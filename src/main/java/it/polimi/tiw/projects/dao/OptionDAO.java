@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.projects.beans.Option;
+import it.polimi.tiw.projects.beans.Product;
 
 public class OptionDAO {
 	
@@ -15,6 +16,26 @@ public class OptionDAO {
 	
 	public OptionDAO(Connection c) {
 		this.connection=c;
+	}
+	
+	public List<Option> list() throws SQLException{
+		List<Option> options = new ArrayList<>();
+		
+		String SQLQuery = "SELECT * FROM available";
+		
+		try(PreparedStatement statement = connection.prepareStatement(SQLQuery);
+				ResultSet resultSet = statement.executeQuery();
+				){
+			while(resultSet.next()) {
+				Option option = new Option();
+				option.setOptionID(resultSet.getInt("id"));
+				option.setName(resultSet.getString("name"));
+				option.setInSale(resultSet.getBoolean("inSale"));
+				option.setProductID(resultSet.getInt("productID"));
+				options.add(option);
+			}}
+		
+		return options;
 	}
 	
 	public List<Option> findAvailableOptions(int productID) throws SQLException{

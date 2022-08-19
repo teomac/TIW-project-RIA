@@ -9,7 +9,8 @@
 </head>
 <body>
 	<div align="right">
-		<a id="logout" onclick="logout()">Logout</a>
+		<a href="#" id="logout">Logout</a>
+		<a href="#" id="home" style="display:none">Back to home page</a>
 	</div>
 	
 	<div id="client_startpage">
@@ -47,6 +48,21 @@
   				<select name="products" id='select'>
             		<option value="0">--Select--</option>
             		</select>
+        
+        
+     	<div id="options" style="display: none">
+     	<a>Select at least one option from the available ones.</a>
+     	</div>
+     	
+     	<table id="options_table">
+     	<thead>
+     	<tr>
+     	<th>Name</th>
+     	</tr>
+     	</thead>
+     	
+     	<tbody id="options_container"></tbody>
+     	</table>
 		
 
 		
