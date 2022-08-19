@@ -379,6 +379,7 @@
 
 		  	 this.reset = function() {
 	      this.listcontainer.style.display = "none";
+	      this.listcontainerbody.innerHTML=" ";
 	    }
 
 		    this.show = function() {
@@ -395,7 +396,10 @@
 		      
 		      if(p!==0){
    				
+   				var array= [];
+   				var i=0;
 				loadedOpt.forEach(function(opt) {
+
 
 				if(opt.productID==p){
 				var div= document.createElement("div");
@@ -403,6 +407,8 @@
     			var br= document.createElement("br");
     			checkbox.type = "checkbox";
     			checkbox.value = opt.optionID;
+    			checkbox.id = opt.optionID;
+    			array.push(opt.optionID);
     			var label = document.createElement("label") 
     			if(opt.inSale){
 				var tn = document.createTextNode(opt.name +"‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎--->‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎"+ "In Sale!");
@@ -417,12 +423,60 @@
     			self.listcontainerbody.appendChild(br)}
     			})
     			
+    			window.localStorage.setItem("array", JSON.stringify(array));
     			self.listcontainer.style.display="block"}}
 }
 
+	function createQuote(){
+		createQuote1();
+		}
 
+	function createQuote1(){
+		
+		let optionFields=[];
+		let selected = [];
+		
+		optionFields = JSON.parse(window.localStorage.getItem("array"));
+		var p=JSON.parse(window.localStorage.getItem("productID"));
+		
+		optionFields.forEach(function(opt) {
+			var ref = document.getElementById(opt);
+			
+			if(ref.checked){
+				selected.push(opt)
+			}
+		})
+		
+		if(selected.length===0){
+			document.getElementById("error_message").textContent="Please select at least one option";
+			document.getElementById("error_message").style.display="block"
+			return;
+		}
+		
+		
+		var self = this; //Important!
 
-
+			
+		      makeCall("POST", "CreateQuote?option=" + selected + "&chosenProduct=" + p, null,
+		        // callback function
+		        function(req) {
+		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
+		            if (req.status == 200) {
+						
+		              // If quotes list is not emtpy, then update view
+		              pageOrchestrator.refresh(); // self visible by closure
+		            }
+		           else {
+					 var data = req.responseText;
+		           	// request failed, handle it
+		           	document.getElementById("error_message").style.display="block";
+		            document.getElementById("error_message").textContent=data; //for demo purposes
+		            return;
+		          }}
+		      }
+		        );
+		
+	}
 
 
 	function PageOrchestrator() {
@@ -459,6 +513,10 @@
       document.getElementById("home").addEventListener('click', () => {
 	        BackHome();
 	      })
+	      
+	      document.getElementById("option_button").addEventListener('click', () => {
+	        createQuote();
+	      })
 
 		document.querySelector("a[href='Logout']").addEventListener('click', () => {
 	        window.sessionStorage.removeItem('username');
@@ -486,12 +544,14 @@
 	    this.refresh = function() {
 	      alertContainer.textContent = "";
 	      quoteDetails.reset();
+	      check.reset();
 	      document.getElementById("logout").style.display="block";
 	      document.getElementById("home").style.display="none";
 	      personalMessage.show();
           clientQuotesList.reset();
           clientQuotesList.show();
-  
+  		  createdd.show();
+		  loadOptions();
 
 	    }
 
