@@ -448,8 +448,8 @@
 		})
 		
 		if(selected.length===0){
-			document.getElementById("error_message").textContent="Please select at least one option";
-			document.getElementById("error_message").style.display="block"
+			document.getElementById("error_message3").textContent="Please select at least one option";
+			document.getElementById("error_message3").style.display="block"
 			return;
 		}
 		
@@ -469,8 +469,8 @@
 		           else {
 					 var data = req.responseText;
 		           	// request failed, handle it
-		           	document.getElementById("error_message").style.display="block";
-		            document.getElementById("error_message").textContent=data; //for demo purposes
+		           	document.getElementById("error_message3").style.display="block";
+		            document.getElementById("error_message3").textContent=data; //for demo purposes
 		            return;
 		          }}
 		      }
