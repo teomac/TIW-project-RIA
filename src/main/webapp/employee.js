@@ -2,7 +2,7 @@
  * Employee page manager
  */
  {
-    let employeeQuotesList, pageOrchestrator = new PageOrchestrator();
+    let employeeQuotesList, employeeNotPricedQuotesList, quoteDetails, personalMessage,  pageOrchestrator = new PageOrchestrator();
     /**
      * This starts the page if the user is logged in.
      */
@@ -479,7 +479,7 @@
 		,document.getElementById("not_priced_body"));
 		
 			
-		quoteDetails= new QuoteDetails(
+		 quoteDetails= new QuoteDetails(
 			document.getElementById("details_table"), 
 			document.getElementById("options_table"),
 			document.getElementById("details1"), 
@@ -492,9 +492,9 @@
 		
 		employeeNotPricedQuotesList.show();
 		
-		document.getElementById("logout").addEventListener('click', () => {
+		/*document.getElementById("logout").addEventListener('click', () => {
 	        logout();
-	      })
+	      })*/
 		
 		document.getElementById("home").addEventListener('click', () => {
 	        BackHome();

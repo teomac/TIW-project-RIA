@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div align="right">
-		<a href="#" id="logout">Logout</a>
+		<a href="Logout" id="logout">Logout</a>
 		<a href="#" id="home" style="display:none">Back to home page</a>
 	</div>
 	
@@ -28,19 +28,13 @@
 				</tr>
 			</thead>
 			<tbody id="client_quotes_body">
-				<tr>
-					<td id="client_quoteID"></td>
-					<td id="client_productID"></td>
-					<td id="client_price"></td>
-					<td><a href="#" onclick="getQuoteDetails(client_quoteID)">Details</a></td>
-				</tr>
 			</tbody>
 		</table>
 	</div>  
 	<div id="no_quotes_client" style="display: none"> You haven't created any quote yet.</div>
-	<div id="error_message" style="display: none"></div>
+	<div class = "errorMessage" id="error_message" style="display: none"></div>
 
-	<div>
+	<div id="client_create">
 		<h1>Create quote</h1>
 		
 		<p>Select a product to display the available options</p>
@@ -63,10 +57,60 @@
      	
      	<tbody id="options_container"></tbody>
      	</table>
-		
-
-		
 	</div>
+	
+	
 	</div>
+	
+	<div id="quote_details" style="display: none"><h1>Quote details</h1>
+		<div>
+		<!-- TODO -->
+		<table class="padding-table-columns" id="details_table">
+		<thead>
+  			<tr>
+    		 	 <th>QuoteID</th>
+   				 <th>Client</th>
+   			     <th>Employee</th>
+   			     <th>ProductID</th>
+   			     <th>Product Name</th>
+   			     <th>Image</th>
+   			     <th>Price</th>
+ 			</tr>
+ 			</thead>
+ 				<tbody id="details1">
+  				</tbody>
+		</table>
+		
+		</div>
+		
+		<div>
+		<br>
+		<br>
+		<br>
+		
+		<h2>Selected Options</h2>
+		
+		<table id="options_table">
+		<thead>
+  			<tr>
+    			 <th>OptionID</th>
+   				 <th>Name</th>
+   			     <th>Status</th>
+ 			</tr>
+ 			</thead>
+ 				<tbody id="details2">
+				</tbody>
+				
+		</table>
+				
+		</div>
+		</div>
+		<div class = "errorMessage" id="error_message2" style="display: none">Failed to load quote details</div>
+	
+	
+	
+	
+	
+	
 </body>
 </html>
