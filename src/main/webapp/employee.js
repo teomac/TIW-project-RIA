@@ -39,16 +39,16 @@
     /**
      * This method logs out the user and goes to the login page.
      */
-    function logout() {
+    /*function logout() {
         let loggedOut = false;
-        makeCall("GET", 'logout', function (response) {
+        makeCall("GET", 'logout', null, function (response) {
             if (response.readyState === XMLHttpRequest.DONE) {
                 switch (response.status) {
                     case 200:
                         loggedOut = true;
                         localStorage.clear();
                         window.sessionStorage.removeItem('username');
-                        window.location.href = "login.html";
+                        window.location.href = "index.html";
                         break;
                     default :
                         alert("Unknown Error");
@@ -61,7 +61,7 @@
             window.location.href = "index.html";
         }
         pageOrchestrator.refresh();
-    }
+    }*/
 	
 	
 	
@@ -105,18 +105,16 @@
 		      makeCall("POST", "AddPrice?price=" + this.price + "&quoteID=" + this.quoteID, null,
 		        // callback function
 		        function(req) {
-					var message = JSON.parse(req.responseText);
-					
 		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
 		            if (req.status == 200) {
-		              
+						
 		              // If quotes list is not emtpy, then update view
 		              pageOrchestrator.refresh(); // self visible by closure
 		            }
 		           else {
 		           	// request failed, handle it
 		           	document.getElementByID("error_message3").style.display="block";
-		            document.getElementById("error_message3").textContent=message; //for demo purposes
+		            document.getElementById("error_message3").textContent="Failed to add price"; //for demo purposes
 		            return;
 		          }}
 		      }
@@ -502,32 +500,10 @@
 	        BackHome();
 	      })
 		
-
-	     /* missionDetails = new MissionDetails({ // many parameters, wrap them in an
-	        // object
-	        alert: alertContainer,
-	        detailcontainer: document.getElementById("id_detailcontainer"),
-	        expensecontainer: document.getElementById("id_expensecontainer"),
-	        expenseform: document.getElementById("id_expenseform"),
-	        closeform: document.getElementById("id_closeform"),
-	        date: document.getElementById("id_date"),
-	        destination: document.getElementById("id_destination"),
-	        status: document.getElementById("id_status"),
-	        description: document.getElementById("id_description"),
-	        country: document.getElementById("id_country"),
-	        province: document.getElementById("id_province"),
-	        city: document.getElementById("id_city"),
-	        fund: document.getElementById("id_fund"),
-	        food: document.getElementById("id_food"),
-	        accomodation: document.getElementById("id_accomodation"),
-	        transportation: document.getElementById("id_transportation")
-	      });
-	      missionDetails.registerEvents(this); // the orchestrator passes itself --this-- so that the wizard can call its refresh function after updating a mission
-
-	      wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
-	      wizard.registerEvents(this);  // the orchestrator passes itself --this-- so that the wizard can call its refresh function after creating a mission
-
-*/ 		
+				document.querySelector("a[href='Logout']").addEventListener('click', () => {
+	        		window.sessionStorage.removeItem('username');
+	      })
+	
 	      }
 	    
 

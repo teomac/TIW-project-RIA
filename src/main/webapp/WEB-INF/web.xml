@@ -44,9 +44,9 @@
     <url-pattern>/GetClientQuotes</url-pattern> 
     <url-pattern>/GetNotPricedQuotes</url-pattern> 
     <url-pattern>/GetEmployeeQuotes</url-pattern> 
+    <url-pattern>/Logout</url-pattern> 
 	<url-pattern>/GetProducts</url-pattern>
 	<url-pattern>/GetQuoteDetails</url-pattern>
-    <url-pattern>/Logout</url-pattern> 
     <url-pattern>/HomepageClient.html</url-pattern> 
     <url-pattern>/HomepageEmployee.html</url-pattern> 
  </filter-mapping> 
