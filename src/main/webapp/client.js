@@ -2,7 +2,7 @@
  * Client page manager
  */
  {
-    let clientQuotesList, quoteDetails, personalMessage, pageOrchestrator = new PageOrchestrator();
+    let clientQuotesList, quoteDetails, personalMessage, check, pageOrchestrator = new PageOrchestrator();
     /**
      * This starts the page if the user is logged in.
      */
@@ -277,73 +277,13 @@
 
 
 
-	function createOption(list) {
-		var self = this;
-		document.getElementById('select').innerHTML=" ";
-
-
-		el = document.createElement('option');
-    	//el.value = value.productName;
-    	el.textContent = "--Select--";
-    	el.id = "0";
-    	document.getElementById('select').appendChild(el);
-
-
-
-	list.forEach(function(value) {
-		el = document.createElement('option');
-    	el.value = value.productName;
-    	el.textContent = value.productName;
-    	el.id = value.productID;
-
-    	el.addEventListener("onclick", () => {
-			document.getElementById("error_message").textContent="Error loading options";
-		document.getElementById("error_message").style.display="block";
-			changeFunc(value.productID);
-
-		})
-
-    	document.getElementById('select').appendChild(el);
-
-	})
-
-}
 
 
 
 
-	function changeFunc(id) {
-
-		let temp=window.localStorage.getItem("options")
-		let options=JSON.parse(temp);
-		if(options==null){
-			document.getElementById("error_message").textContent="options==null";
-		document.getElementById("error_message").style.display="block";
-		}
-		else{
-		document.getElementById("error_message").textContent="Error loading options";
-		document.getElementById("error_message").style.display="block";}
-		this.id = id
-
-		//var list = options.filter((opt) => opt.productID === this.id);
-
-		options.forEach(function(value) {
-
-			//console.log(value.Name);
-
-			row = document.createElement("tr");
-			textCell = document.createElement("td");
-        	textCell.textContent = value.name;
-        	row.appendChild(textCell);
-        	document.getElementById("options_container").appendChild(row);
-		})
-
-	}
-
-
-
-	function options() {
-		let options;
+	function loadOptions() {
+	    var self = this;
+		
 		makeCall("GET", "GetOptions", null,
 		function(req) {
 			if (req.readyState == XMLHttpRequest.DONE) {
@@ -359,10 +299,21 @@
 			}
 
 		})
-		return options;
 	}
 
-	function dropDown() {
+	function createDropDown(_listcontainer,_listcontainerbody) {
+		
+		this.listcontainer = _listcontainer;
+		    this.listcontainerbody = _listcontainerbody;
+		  	resetMessages();
+		  	
+		  	this.reset = function() {
+	      this.listcontainer.style.display = "none";}	    
+		  	
+		 this.show = function() {
+
+		  var self = this; //Important!
+		  
 		makeCall("GET", "GetProducts", null,
 		function(req) {
 
@@ -374,7 +325,7 @@
 		            	document.getElementById("error_message").style.display="block";
 					}
 					else {
-						createOption(productsToShow);
+						self.update(productsToShow)
 					}
 
 				}
@@ -386,7 +337,91 @@
 			}
 
 		})
+		}
+		
+		this.update = function(products){
+			
+		this.listcontainerbody.innerHTML = "";
+
+		var self = this;
+		
+		el = document.createElement('option');
+    	//el.value = value.productName;
+    	el.textContent = "--Select--";
+    	el.value = "0";
+    	self.listcontainerbody.appendChild(el);
+
+
+		products.forEach(function(product) {
+		el = document.createElement('option');
+    	el.value = product.productCode;
+    	el.textContent = product.productName;
+
+    	self.listcontainerbody.appendChild(el);
+	})
+		self.listcontainerbody.addEventListener("change", () => {
+				var select = document.getElementById('select');
+				var value = select.options[select.selectedIndex].value;
+				window.localStorage.setItem("productID", JSON.stringify(value));
+			    check.show();
+        	
+  
+		})
+		 this.listcontainer.style.display = "block";}
 	}
+
+
+
+ function createCheckbox(_listcontainer,_listcontainerbody){
+			this.listcontainer = _listcontainer;
+		    this.listcontainerbody = _listcontainerbody;
+		  	resetMessages();
+
+		  	 this.reset = function() {
+	      this.listcontainer.style.display = "none";
+	    }
+
+		    this.show = function() {
+
+		
+		      var self = this; //Important! 
+		      
+		      loadedOpt= JSON.parse(window.localStorage.getItem("options"));
+		      var p=JSON.parse(window.localStorage.getItem("productID"));
+		      
+		      self.listcontainerbody.innerHTML="";
+		      
+		      console.log(p);
+		      
+		      if(p!==0){
+   				
+				loadedOpt.forEach(function(opt) {
+
+				if(opt.productID==p){
+				var div= document.createElement("div");
+    			var checkbox = document.createElement('input');
+    			var br= document.createElement("br");
+    			checkbox.type = "checkbox";
+    			checkbox.value = opt.optionID;
+    			var label = document.createElement("label") 
+    			if(opt.inSale){
+				var tn = document.createTextNode(opt.name +"‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎--->‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎"+ "In Sale!");
+					} 
+					else{var tn = document.createTextNode(opt.name);}
+    			
+    			
+    			label.appendChild(tn);
+    			div.appendChild(checkbox);
+    			div.appendChild(label);
+    			self.listcontainerbody.appendChild(div);
+    			self.listcontainerbody.appendChild(br)}
+    			})
+    			
+    			self.listcontainer.style.display="block"}}
+}
+
+
+
 
 
 
@@ -406,7 +441,6 @@
 
 		clientQuotesList.show();
 
-		//options();
 		//dropDown();
 		//changeFunc(1);
 
@@ -430,31 +464,46 @@
 	        window.sessionStorage.removeItem('username');
 	      })
 
+		
+		createdd = new createDropDown(
+			document.getElementById("client_create"),
+			        document.getElementById("select")
+		);
+		createdd.show();
+
+		loadOptions();
+		
+		check=new createCheckbox(
+			document.getElementById("select_options"),
+			        document.getElementById("fill_options") 	
+		);
+		
+
 
 	      }
 
 
 	    this.refresh = function() {
 	      alertContainer.textContent = "";
-	       quoteDetails.reset();
+	      quoteDetails.reset();
 	      document.getElementById("logout").style.display="block";
 	      document.getElementById("home").style.display="none";
 	      personalMessage.show();
           clientQuotesList.reset();
           clientQuotesList.show();
-
-
+  
 
 	    }
 
       this.prepareShowDetails=function(){
   			clientQuotesList.reset();
+  			createdd.reset();
   			document.getElementById("client_startpage").style.display="none";
   			document.getElementById("quote_details").style.display="block";
   			document.getElementById("logout").style.display="none";
   			document.getElementById("home").style.display="block";
   			quoteDetails.show();
-
+	
   	}
 
 }}
