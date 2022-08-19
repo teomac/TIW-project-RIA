@@ -141,8 +141,7 @@
 		    }
 		  }
 		  
-	function createOption(list, options) {
-		this.options = options;
+	function createOption(list) {
 		var self = this;
 		document.getElementById('select').innerHTML=" ";
 		
@@ -153,14 +152,18 @@
     	el.id = "0";
     	document.getElementById('select').appendChild(el);
     	
+    	
+    	
 	list.forEach(function(value) {
 		el = document.createElement('option');
     	el.value = value.productName;
     	el.textContent = value.productName;
     	el.id = value.productID;
     	
-    	el.addEventListener("click", () => {
-			changeFunc(value.productID, this.options);
+    	el.addEventListener("onclick", () => {
+			document.getElementById("error_message").textContent="Error loading options";
+		document.getElementById("error_message").style.display="block";
+			changeFunc(value.productID);
 	
 		})
     
@@ -173,16 +176,29 @@
 
 
 
-	function changeFunc(id, options) {
+	function changeFunc(id) {
+		
+		let temp=window.localStorage.getItem("options")
+		let options=JSON.parse(temp);
+		if(options==null){
+			document.getElementById("error_message").textContent="options==null";
+		document.getElementById("error_message").style.display="block";
+		}
+		else{
+		document.getElementById("error_message").textContent="Error loading options";
+		document.getElementById("error_message").style.display="block";}
 		this.id = id
 		
-		var list = options.filter((opt) => opt.productID === this.id);
+		//var list = options.filter((opt) => opt.productID === this.id);
 		
-		list.forEach(function(value) {
+		options.forEach(function(value) {
+			
+			//console.log(value.Name);
+			
 			row = document.createElement("tr");
-			numberCell = document.createElement("td");
-        	numberCell.textContent = value.name;
-        	row.appendChild(numberCell);
+			textCell = document.createElement("td");
+        	textCell.textContent = value.name;
+        	row.appendChild(textCell);
         	document.getElementById("options_container").appendChild(row);
 		})
 		
@@ -191,11 +207,13 @@
 	
 	
 	function options() {
+		let options;
 		makeCall("GET", "GetOptions", null, 
 		function(req) {
 			if (req.readyState == XMLHttpRequest.DONE) {
 				if (req.status == 200) {
 					var optionsToShow = JSON.parse(req.responseText);
+	            	window.localStorage.setItem("options", JSON.stringify(optionsToShow));
 				}
 				
 				else {
@@ -204,13 +222,11 @@
 				}
 			}
 			
-			
-			return optionsToShow;
-			
 		})
+		return options;
 	}
 	
-	function dropDown(options) {
+	function dropDown() {
 		makeCall("GET", "GetProducts", null,
 		function(req) {
 			
@@ -222,7 +238,7 @@
 		            	document.getElementById("error_message").style.display="block";
 					}
 					else {
-						createOption(productsToShow, options);
+						createOption(productsToShow);
 					}
 					
 				}
@@ -257,8 +273,9 @@
 		
 		clientQuotesList.show();
 		
-		this.options = options();
-		dropDown(this.options);
+		options();
+		dropDown();
+		changeFunc(1);
 		
 		
 		

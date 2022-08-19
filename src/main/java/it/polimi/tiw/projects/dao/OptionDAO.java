@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.projects.beans.Option;
-import it.polimi.tiw.projects.beans.Product;
 
 public class OptionDAO {
 	
