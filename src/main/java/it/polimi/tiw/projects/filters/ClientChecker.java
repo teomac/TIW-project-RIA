@@ -16,12 +16,12 @@ import it.polimi.tiw.projects.beans.User;
 /**
  * Servlet Filter implementation class LoginChecker
  */
-public class EmployeeChecker implements Filter {
+public class ClientChecker implements Filter {
 
 	/**
 	 * Default constructor.
 	 */
-	public EmployeeChecker() {
+	public ClientChecker() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -39,7 +39,7 @@ public class EmployeeChecker implements Filter {
 			throws IOException, ServletException
 
 	{
-		System.out.print("Employee checker filter executing ...\n");
+		System.out.print("Client checker filter executing ...\n");
 
 		
 		HttpServletRequest req = (HttpServletRequest) request;
@@ -50,13 +50,13 @@ public class EmployeeChecker implements Filter {
 		if (s.isNew() || s.getAttribute("user") == null) {
 			res.setStatus(403);
 			res.setHeader("Location", loginpath);
-			System.out.print("Employee checker FAILED...\n");
+			System.out.print("Client checker FAILED...\n");
 			return;
 		}
 		User user = new User();
 		user=(User) s.getAttribute("user");
 		
-		if(!(user.getEmployee())) {
+		if(user.getEmployee()) {
 			res.setStatus(403);
 			res.setHeader("Location", loginpath);
 			System.out.print("User not allowed...\n");

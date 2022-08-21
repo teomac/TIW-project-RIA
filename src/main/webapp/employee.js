@@ -21,7 +21,8 @@
 		document.getElementById("error_message").style.display="none";
 		document.getElementById("no_quotes_to_price").style.display="none";
 		 document.getElementById("error_message1").style.display="none";
-		 document.getElementById("error_message2").style.display="none";  
+		 document.getElementById("error_message2").style.display="none";
+		  document.getElementById("error_message3").style.display="none";   
 	}
 	
 	 function PersonalMessage(_username, messagecontainer) {
@@ -34,20 +35,14 @@
     
     
     
-    
-	//LOGOUT
-    /**
-     * This method logs out the user and goes to the login page.
-     */
-    /*function logout() {
+    function logout() {
         let loggedOut = false;
-        makeCall("GET", 'logout', null, function (response) {
+        makeCall("GET", 'Logout', null, function (response) {
             if (response.readyState === XMLHttpRequest.DONE) {
                 switch (response.status) {
                     case 200:
                         loggedOut = true;
                         localStorage.clear();
-                        window.sessionStorage.removeItem('username');
                         window.location.href = "index.html";
                         break;
                     default :
@@ -60,8 +55,7 @@
             localStorage.clear();
             window.location.href = "index.html";
         }
-        pageOrchestrator.refresh();
-    }*/
+    }
 	
 	
 	
@@ -73,16 +67,23 @@
 	function addPrice(quote){
 		
 		pageOrchestrator.prepareShowDetails();
+		
+		var old_element = document.getElementById("price_form");
+		var new_element = old_element.cloneNode(true);
+		old_element.parentNode.replaceChild(new_element, old_element);
+
+
 		document.getElementById("price_quote").style.display="block";
 		document.getElementById("price_form").addEventListener('click', () => {
 			price=document.getElementById("written_price").value;
-			if(price < 0 || price === 0){
-				document.getElementById("error_message3").textContent="Price can not be negative or equal than zero";
+			if(price < 0 || price === 0 || price==null || price===""){
+				document.getElementById("error_message3").textContent="Price can not be negative or equal to zero";
 				document.getElementById("error_message3").style.display="block";
 				pageOrchestrator.prepareShowDetails();
 			}	
 			else{
-	        receivePrice(quote, price);}
+	        receivePrice(quote, price);
+	        }
 	      })
 		
 	}
@@ -90,7 +91,7 @@
 	function resetAddPrice(){
 		document.getElementById("written_price").value="";
 		document.getElementById("price_quote").style.display="none";
-		document.getElementById("error_message3").style.display="block";
+		document.getElementById("error_message3").style.display="none";
 	}
 	
 	
@@ -107,13 +108,14 @@
 		        function(req) {
 		          if (req.readyState == XMLHttpRequest.DONE) { // == 4
 		            if (req.status == 200) {
-						
-		              // If quotes list is not emtpy, then update view
+						window.localStorage.removeItem("quoteID");
+		              // If quotes list is not empty, then update view
+		              
 		              pageOrchestrator.refresh(); // self visible by closure
 		            }
 		           else {
 		           	// request failed, handle it
-		           	document.getElementByID("error_message3").style.display="block";
+		           	document.getElementById("error_message3").style.display="block";
 		            document.getElementById("error_message3").textContent="Failed to add price"; //for demo purposes
 		            return;
 		          }}
@@ -423,7 +425,7 @@
 		        var self=this;
 		        
 		      
-		        //Create a row for each conference
+		        //Create a row for each option
 		        selectedOptions.forEach(function(option){ 
 		        row2 = document.createElement("tr");
 		        
@@ -492,16 +494,14 @@
 		
 		employeeNotPricedQuotesList.show();
 		
-		/*document.getElementById("logout").addEventListener('click', () => {
-	        logout();
-	      })*/
 		
 		document.getElementById("home").addEventListener('click', () => {
+			window.localStorage.removeItem("quoteID");
 	        BackHome();
 	      })
 		
-				document.querySelector("a[href='Logout']").addEventListener('click', () => {
-	        		window.sessionStorage.removeItem('username');
+					document.getElementById("logout").addEventListener('click', () => {
+	        		logout();
 	      })
 	
 	      }

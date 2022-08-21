@@ -19,6 +19,8 @@
 	function resetMessages(){
 		document.getElementById("no_quotes_client").style.display="none";
 		document.getElementById("error_message").style.display="none";
+		document.getElementById("error_message2").style.display="none";
+		document.getElementById("error_message3").style.display="none";
 	}
 
 	function PersonalMessage(_username, messagecontainer) {
@@ -30,6 +32,27 @@
 
 
 
+function logout() {
+        let loggedOut = false;
+        makeCall("GET", 'Logout', null, function (response) {
+            if (response.readyState === XMLHttpRequest.DONE) {
+                switch (response.status) {
+                    case 200:
+                        loggedOut = true;
+                        localStorage.clear();
+                        window.location.href = "index.html";
+                        break;
+                    default :
+                        alert("Unknown Error");
+                        break;
+                }
+            }
+        });
+        if (!loggedOut) {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    }
 
 		function BackHome(){
 			pageOrchestrator.refresh();
@@ -63,7 +86,7 @@
 
   		      this.quoteID = localStorage.getItem("quoteID");
   		      var self = this; //Important!
-
+	
   		      makeCall("GET", "GetQuoteDetails?quoteID=" + this.quoteID, null,
   		        // callback function
   		        function(req) {
@@ -518,9 +541,10 @@
 	        createQuote();
 	      })
 
-		document.querySelector("a[href='Logout']").addEventListener('click', () => {
-	        window.sessionStorage.removeItem('username');
+		document.getElementById("logout").addEventListener('click', () => {
+	        		logout();
 	      })
+	
 
 		
 		createdd = new createDropDown(

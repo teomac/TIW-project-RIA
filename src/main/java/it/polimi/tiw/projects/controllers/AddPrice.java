@@ -46,9 +46,14 @@ public class AddPrice extends HttpServlet{
 		User user = (User) session.getAttribute("user");
 		employeeUser = user.getUsername();
 		
-		/*try {*/
+		try {
 			price = Double.parseDouble(request.getParameter("price"));
-			quoteID = Integer.parseInt(request.getParameter("quoteID"));
+			quoteID = Integer.parseInt(request.getParameter("quoteID"));}
+		catch(Exception e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Invalid input");
+			return;
+		}
 		
 		QuoteDAO quoteDao = new QuoteDAO(connection);
 		
@@ -60,7 +65,7 @@ public class AddPrice extends HttpServlet{
 			}
 			else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().println("InvalidInput");
+				response.getWriter().println("Invalid input");
 				return;
 			}
 		} catch (SQLException e) {
