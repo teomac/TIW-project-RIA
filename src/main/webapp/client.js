@@ -568,6 +568,7 @@ function logout() {
 	    this.refresh = function() {
 	      alertContainer.textContent = "";
 	      quoteDetails.reset();
+	      resetMessages();  
 	      check.reset();
 	      document.getElementById("logout").style.display="block";
 	      document.getElementById("home").style.display="none";
